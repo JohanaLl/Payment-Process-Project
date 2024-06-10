@@ -32,7 +32,6 @@ public class Customer {
 	
 	private String adress;
 	
-	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CustomerProduct> products;
 	
