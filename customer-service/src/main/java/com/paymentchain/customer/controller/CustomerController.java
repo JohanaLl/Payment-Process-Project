@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.paymentchain.common.controller.CommonController;
 import com.paymentchain.customer.entity.Customer;
+import com.paymentchain.customer.repository.CustomerRepository;
 import com.paymentchain.customer.service.CustormerService;
 
 @RestController
@@ -38,6 +40,15 @@ public class CustomerController extends CommonController<Customer, CustormerServ
 		custormerDB.setAdress(customer.getAdress());
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(custormerDB));
+	}
+	
+	@PostMapping
+	public ResponseEntity<?> create(@RequestBody Customer customer) {
+		
+		//Asignar el customer a cada uno de los products que llegan en la lista de creación
+		customer.getProducts().forEach(x -> x.setCustomer(customer));
+		Customer custormerDB = service.save(customer);
+		return ResponseEntity.status(HttpStatus.CREATED).body(custormerDB);
 	}
 
 }
