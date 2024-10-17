@@ -12,5 +12,13 @@ public class CustormerServiceImpl extends CommonServiceImpl<Customer, CustomerRe
 	public CustormerServiceImpl(CustomerRepository repository) {
 		super(repository);
 	}
+	
+	public Customer findByCode(String code) {
+		return repository.findByCode(code);
+	}
+	
+	public Customer findByAccount(String iban) {
+		return repository.findByAccount(iban);
+	}
 
 }
