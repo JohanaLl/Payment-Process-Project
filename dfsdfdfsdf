@@ -1,0 +1,91 @@
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500   1) <?xml version="1.0" encoding="UTF-8"?>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500   2) <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500   3) 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500   4) 	<modelVersion>4.0.0</modelVersion>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500   5) 	<parent>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500   6) 		<groupId>org.springframework.boot</groupId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500   7) 		<artifactId>spring-boot-starter-parent</artifactId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500   8) 		<version>3.3.0</version>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500   9) 		<relativePath/> <!-- lookup parent from repository -->
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  10) 	</parent>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  11) 	<groupId>com.paymentchain</groupId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  12) 	<artifactId>customer-service</artifactId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  13) 	<version>0.0.1-SNAPSHOT</version>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  14) 	<name>customer-service</name>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  15) 	<description>Demo project for Spring Boot</description>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  16) 	<properties>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  17) 		<java.version>17</java.version>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  18) 	</properties>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  19) 	<dependencies>
+00000000 (Not Committed Yet 2024-10-15 16:34:52 -0500  20) 		<dependency>
+00000000 (Not Committed Yet 2024-10-15 16:34:52 -0500  21) 		    <groupId>org.postgresql</groupId>
+00000000 (Not Committed Yet 2024-10-15 16:34:52 -0500  22) 		    <artifactId>postgresql</artifactId>
+00000000 (Not Committed Yet 2024-10-15 16:34:52 -0500  23) 		    <version>42.7.4</version>
+00000000 (Not Committed Yet 2024-10-15 16:34:52 -0500  24) 		</dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  25) 		<dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  26) 			<groupId>com.paymentchain</groupId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  27) 			<artifactId>common-service</artifactId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  28) 			<version>0.0.1-SNAPSHOT</version>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  29) 		</dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  30) 		<dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  31) 			<groupId>org.springframework.boot</groupId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  32) 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  33) 		</dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  34) 		<dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  35) 			<groupId>org.springframework.boot</groupId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  36) 			<artifactId>spring-boot-starter-web</artifactId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  37) 		</dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  38) 
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  39) 		<dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  40) 			<groupId>org.springframework.boot</groupId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  41) 			<artifactId>spring-boot-devtools</artifactId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  42) 			<scope>runtime</scope>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  43) 			<optional>true</optional>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  44) 		</dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  45) 		<dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  46) 			<groupId>com.mysql</groupId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  47) 			<artifactId>mysql-connector-j</artifactId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  48) 			<scope>runtime</scope>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  49) 		</dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  50) 		<dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  51) 			<groupId>org.projectlombok</groupId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  52) 			<artifactId>lombok</artifactId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  53) 			<optional>true</optional>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  54) 		</dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  55) 		<dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  56) 			<groupId>org.springframework.boot</groupId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  57) 			<artifactId>spring-boot-starter-test</artifactId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  58) 			<scope>test</scope>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  59) 		</dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  60) 		<dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  61) 			<groupId>org.springframework.boot</groupId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  62) 			<artifactId>spring-boot-starter</artifactId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  63) 		</dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  64) 		<dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  65) 	      <groupId>org.springdoc</groupId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  66) 	      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  67) 	      <version>2.5.0</version>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  68) 	   </dependency>
+00000000 (Not Committed Yet 2024-10-15 16:34:52 -0500  69) 		<dependency>
+00000000 (Not Committed Yet 2024-10-15 16:34:52 -0500  70) 			<groupId>org.springframework.boot</groupId>
+00000000 (Not Committed Yet 2024-10-15 16:34:52 -0500  71) 			<artifactId>spring-boot-starter-webflux</artifactId>
+00000000 (Not Committed Yet 2024-10-15 16:34:52 -0500  72) 		</dependency>
+00000000 (Not Committed Yet 2024-10-15 16:34:52 -0500  73) 		<dependency>
+00000000 (Not Committed Yet 2024-10-15 16:34:52 -0500  74) 			<groupId>io.projectreactor</groupId>
+00000000 (Not Committed Yet 2024-10-15 16:34:52 -0500  75) 			<artifactId>reactor-test</artifactId>
+00000000 (Not Committed Yet 2024-10-15 16:34:52 -0500  76) 			<scope>test</scope>
+00000000 (Not Committed Yet 2024-10-15 16:34:52 -0500  77) 		</dependency>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  78) 	</dependencies>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  79) 
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  80) 	<build>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  81) 		<plugins>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  82) 			<plugin>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  83) 				<groupId>org.springframework.boot</groupId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  84) 				<artifactId>spring-boot-maven-plugin</artifactId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  85) 				<configuration>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  86) 					<excludes>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  87) 						<exclude>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  88) 							<groupId>org.projectlombok</groupId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  89) 							<artifactId>lombok</artifactId>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  90) 						</exclude>
+7421ef5e (JohanaLl          2024-06-09 21:56:20 -0500  91) 					</exclude
