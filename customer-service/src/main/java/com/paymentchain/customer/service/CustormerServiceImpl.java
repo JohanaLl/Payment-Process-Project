@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.paymentchain.common.services.CommonServiceImpl;
 import com.paymentchain.customer.entity.Customer;
+import com.paymentchain.customer.exception.CustomerNotFoundException;
 import com.paymentchain.customer.repository.CustomerRepository;
 
 @Service
@@ -14,7 +15,12 @@ public class CustormerServiceImpl extends CommonServiceImpl<Customer, CustomerRe
 	}
 	
 	public Customer findByCode(String code) {
-		return repository.findByCode(code);
+		Customer customer = repository.findByCode(code);
+		
+		if (customer == null) {
+			throw new CustomerNotFoundException(code);
+		}
+		return customer;
 	}
 	
 	public Customer findByAccount(String iban) {
