@@ -1,7 +1,9 @@
 package com.paymentchain.customer.controller;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -99,12 +101,18 @@ public class CustomerController extends CommonController<Customer, CustormerServ
 	 */
 	@GetMapping("/full")
 	public Customer getByCode(@RequestParam String code) {
+		
 		Customer customer = service.findByCode(code);
+		
 		List<CustomerProduct> products = customer.getProducts();
 		products.forEach(x -> {
 			String productName = getProductName(x.getId());
 			x.setProductName(productName); 
 		});
+		
+		List<?> transactions = getTansactions(customer.getIban());
+		customer.setTransaccions(transactions);
+		
 		return customer;
 	}
 	
@@ -115,15 +123,38 @@ public class CustomerController extends CommonController<Customer, CustormerServ
 		WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
 				.baseUrl("http://localhost:8083/api/product")
 				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-				.defaultUriVariables(Collections.singletonMap("url", "http://localhost:8083/api/product"))
+//				.defaultUriVariables(Collections.singletonMap("url", "http://localhost:8083/api/product"))
 				.build();
 		
-		JsonNode block = build.method(HttpMethod.GET).uri("/" + id)
-				.retrieve().bodyToMono(JsonNode.class).block();
+		JsonNode block = build.method(HttpMethod.GET)
+				.uri("/" + id)
+				.retrieve()
+				.bodyToMono(JsonNode.class)
+				.block();
 		
 		String name = block.get("name").asText();
 		return name;
 		
+	}
+	
+	//Método para llamar al microservicio de transaccion y obtener sus propiedades por HTTP
+	private List<?> getTansactions(String accountIban) {
+		
+		WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
+				.baseUrl("http://localhost:8082/api/transaction")
+				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.build();
+		
+		List<?> transactions = build.get()
+				.uri(uriBuilder -> uriBuilder.path("/customer/transactions")
+					.queryParam("iban", accountIban)
+					.build())
+				.retrieve()
+				.bodyToFlux(Object.class)
+				.collectList()
+				.block();		
+		
+		return transactions;
 	}
 
 }

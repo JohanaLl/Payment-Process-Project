@@ -21,7 +21,7 @@ public class ProductController extends CommonController<Product, ProductService>
 	public ProductController(ProductService service) {
 		super(service);
 	}
-	
+
 	@PutMapping("/{id}")
 	public ResponseEntity<?> edit(@RequestBody Product customer, @PathVariable Long id) {
 		Optional<Product> productOp = service.findById(id);
