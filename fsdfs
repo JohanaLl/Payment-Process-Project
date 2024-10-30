@@ -1,0 +1,84 @@
+[33mcommit 19dd1357f9ac7ce97157b9104c195957fb66886f[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: JohanaLl <johisllanos@gmail.com>
+Date:   Sun Oct 27 18:50:37 2024 -0500
+
+    Configuracion de perfiles y propiedades globales
+
+[33mcommit 9740d28bf4e8c25d5843492f21fb55cef05398fa[m
+Author: JohanaLl <johisllanos@gmail.com>
+Date:   Sun Oct 27 16:51:53 2024 -0500
+
+    Se especifica la configuracion de perfiles para los deiferentes ambientes
+
+[33mcommit 0496a4ce14c4f5e2e240e3eab50a6377d0d5dafd[m[33m ([m[1;31morigin/transaction[m[33m, [m[1;32mtransaction[m[33m)[m
+Author: JohanaLl <johisllanos@gmail.com>
+Date:   Sun Oct 27 15:58:21 2024 -0500
+
+    Se crea comunicación entre ms transacciones y clientes, para buscar todas las transacciones de un cliente. Se agrea método de edición de transacciones
+
+[33mcommit 6d5d2ba5ca92c1deaf6378c4a630101dc59a7014[m[33m ([m[1;31morigin/excepciones[m[33m, [m[1;32mexcepciones[m[33m)[m
+Author: JohanaLl <johisllanos@gmail.com>
+Date:   Sat Oct 19 16:35:31 2024 -0500
+
+    Se agregan excepciones persinalizadas para el servicio de cliente
+
+[33mcommit 92252d61d6cbae8a1b05d2707ef96f8860de6791[m
+Author: JohanaLl <johisllanos@gmail.com>
+Date:   Fri Oct 18 19:12:47 2024 -0500
+
+    configuration
+
+[33mcommit a38ccecbe082d40ce1ed1147662c8fcb705e1bec[m
+Merge: ae0ad58 0d145fd
+Author: JohanaLl <johisllanos@gmail.com>
+Date:   Fri Oct 18 12:01:49 2024 -0500
+
+    Merge branch 'main' of https://github.com/JohanaLl/PaymentPlayground into transaction
+
+[33mcommit ae0ad5893cadc61abc16c6679572324a617efd64[m
+Author: JohanaLl <johisllanos@gmail.com>
+Date:   Fri Oct 18 12:01:36 2024 -0500
+
+    Se agrega el microservicio transacción con lógica de creación de transacciones
+
+[33mcommit 0d145fdeb88e27d553fe1431aa4ccca31aa526ea[m
+Author: JohanaLl <johisllanos@gmail.com>
+Date:   Wed Oct 16 20:01:17 2024 -0500
+
+    Se finaliza la comunicación entre customer y products para listar los productos que tiene cada cliente de acuerdo al id de cliente
+
+[33mcommit fb7e7e9c3b1e0a5815b30625abba49359f95d5c1[m
+Author: JohanaLl <johisllanos@gmail.com>
+Date:   Tue Jun 11 20:19:02 2024 -0500
+
+    Se modifica el método de crear cliente para que asigne el cliente a cada uno de los productos
+
+[33mcommit bacd74d2aea4d62ac7cf207a76302f0619214159[m
+Author: JohanaLl <johisllanos@gmail.com>
+Date:   Mon Jun 10 17:14:03 2024 -0500
+
+    Se agrega el microservicio transaction
+
+[33mcommit efd643025efd407bb212c9623910e18467b44003[m
+Author: JohanaLl <johisllanos@gmail.com>
+Date:   Sun Jun 9 23:47:54 2024 -0500
+
+    Se agrega el microservicio product
+
+[33mcommit 7421ef5e51e75de3581d32a8f605022081ea2d0e[m
+Author: JohanaLl <johisllanos@gmail.com>
+Date:   Sun Jun 9 21:56:20 2024 -0500
+
+    Se agrega el microservicio customer
+
+[33mcommit dc44a72f0913108dc3cc2d25cec02f9b868eaccd[m
+Author: JohanaLl <johisllanos@gmail.com>
+Date:   Sun Jun 9 19:42:43 2024 -0500
+
+    Se agrega el microservicio comun para realizar las operacions CRUD en todos los microservicios de lógica de negocio
+
+[33mcommit cae31cdc9f8b5bcbed3163c7061df7e57589f8c4[m
+Author: Leidy Johana Llanos <johisllanos@gmail.com>
+Date:   Sun Jun 9 18:56:01 2024 -0500
+
+    Initial commit
