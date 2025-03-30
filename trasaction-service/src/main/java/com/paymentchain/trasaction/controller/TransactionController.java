@@ -51,7 +51,7 @@ public class TransactionController extends CommonController<Transaction, Transac
 	/**
 	 * Método para editar una transacción
 	 */
-	@PutMapping("/{id")
+	@PutMapping("/{id}")
 	public ResponseEntity<?> edit(@RequestBody Transaction transaction, @PathVariable Long id) {
 		Optional<Transaction> transactionOp = service.findById(id);
 		

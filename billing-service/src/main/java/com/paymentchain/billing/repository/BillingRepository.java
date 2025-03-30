@@ -1,8 +1,8 @@
-package com.paymentchain.trasaction.repository;
+package com.paymentchain.billing.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.paymentchain.trasaction.entities.Billing;
+import com.paymentchain.billing.entities.Billing;
 
 public interface BillingRepository extends CrudRepository<Billing, Long>{
 

@@ -1,4 +1,4 @@
-package com.paymentchain.trasaction.entities;
+package com.paymentchain.billing.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

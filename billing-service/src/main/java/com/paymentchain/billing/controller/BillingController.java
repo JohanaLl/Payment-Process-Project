@@ -1,12 +1,11 @@
-package com.paymentchain.trasaction.controller;
+package com.paymentchain.billing.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.paymentchain.billing.entities.Billing;
+import com.paymentchain.billing.service.BillingService;
 import com.paymentchain.common.controller.CommonController;
-import com.paymentchain.trasaction.entities.Billing;
-import com.paymentchain.trasaction.service.BillingService;
-
 @RestController
 @RequestMapping("/api/billing")
 public class BillingController extends CommonController<Billing, BillingService> {
