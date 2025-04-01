@@ -46,14 +46,14 @@ public class Transaction {
 	private Chanel chanel;
 	
     // Método para actualizar el estado basado en la fecha
-    public Status updateStatus(Transaction transaction) {
-    	
-    	Date fechaActual = new Date();
-        
-        this.status = transaction.getDate().after(fechaActual) 
-        		? Status.PENDING
-        		: Status.SETTLED;
-        
-        return status;
-    }
+//    public Status updateStatus(Transaction transaction) {
+//    	
+//    	Date fechaActual = new Date();
+//        
+//        this.status = transaction.getDate().after(fechaActual) 
+//        		? Status.PENDING
+//        		: Status.SETTLED;
+//        
+//        return status;
+//    }
 }

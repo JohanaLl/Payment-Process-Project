@@ -17,7 +17,6 @@ import lombok.Data;
 public class CustomerProduct {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	private long productId;

@@ -33,7 +33,6 @@ public class TransactionController extends CommonController<Transaction, Transac
 	 */
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody Transaction transaction) {
-		
 		Transaction trxDB = service.create(transaction);
 		return ResponseEntity.status(HttpStatus.CREATED).body(trxDB);
 	}
@@ -43,7 +42,6 @@ public class TransactionController extends CommonController<Transaction, Transac
 	 */
 	@GetMapping("/customer/transactions")
 	public List<Transaction> findByIban(@RequestParam String iban) {
-		
 		List<Transaction> transactions = service.findByIban(iban);
 		return transactions;
 	}

@@ -1,9 +1,7 @@
 package com.paymentchain.customer.controller;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +38,7 @@ import reactor.netty.http.client.HttpClient;
 @RequestMapping("/api/customer")
 public class CustomerController extends CommonController<Customer, CustormerService>{
 
-	//WEBFLUX COMUNICACION HTTP
+	//WEBFLUX COMUNICACION HTTP - Cliente API
 	private final WebClient.Builder webClientBuilder;
 	
 	public CustomerController(CustormerService service, WebClient.Builder webClientBuilder) {
@@ -85,17 +83,18 @@ public class CustomerController extends CommonController<Customer, CustormerServ
 	}
 	
 	/**
-	 * Metodo para Asignar el cliente a cada uno de los products que llegan en la lista de creación
+	 * Metodo para crear clientes y asignarle los products que llegan en la creación
 	 */
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody Customer customer) {
+		//Asignar el cliente a cada uno de los productos
 		customer.getProducts().forEach(x -> x.setCustomer(customer));
 		Customer custormerDB = service.save(customer);
 		return ResponseEntity.status(HttpStatus.CREATED).body(custormerDB);
 	}
 	
 	/**
-	 * Metodo que devuelve un cliente por su código y asigna el nombre del producto a cada producto del cliente
+	 * Metodo que devuelve un cliente por su código y asigna el nombre de cada producto del cliente
 	 * @param code
 	 * @return
 	 */
@@ -103,8 +102,9 @@ public class CustomerController extends CommonController<Customer, CustormerServ
 	public Customer getByCode(@RequestParam String code) {
 		
 		Customer customer = service.findByCode(code);
-		
 		List<CustomerProduct> products = customer.getProducts();
+		
+		//Obtener el nombre de cada producto
 		products.forEach(x -> {
 			String productName = getProductName(x.getId());
 			x.setProductName(productName); 
@@ -117,13 +117,17 @@ public class CustomerController extends CommonController<Customer, CustormerServ
 	}
 	
 	
-	//Método para llamar al microservicio de producto y obtener sus propiedades por HTTP
+	/**
+	 * Método para Obtener todos los productos de un cliente
+	 * @param id
+	 * @return
+	 */
 	private String getProductName(long id) {
 		
 		WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-				.baseUrl("http://localhost:8083/api/product")
+				.baseUrl("http://localhost:47152/api/product")
 				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-//				.defaultUriVariables(Collections.singletonMap("url", "http://localhost:8083/api/product"))
+//				.defaultUriVariables(Collections.singletonMap("url", "http://localhost:47152/api/product"))
 				.build();
 		
 		JsonNode block = build.method(HttpMethod.GET)
@@ -137,18 +141,22 @@ public class CustomerController extends CommonController<Customer, CustormerServ
 		
 	}
 	
-	//Método para llamar al microservicio de transaccion y obtener sus propiedades por HTTP
+	/**
+	 * Método para obteber todas las transacciones asociadas a un cliente
+	 * @param accountIban
+	 * @return
+	 */
 	private List<?> getTansactions(String accountIban) {
 		
 		WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-				.baseUrl("http://localhost:8082/api/transaction")
+				.baseUrl("http://localhost:47153/api/transaction")
 				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.build();
 		
 		List<?> transactions = build.get()
 				.uri(uriBuilder -> uriBuilder.path("/customer/transactions")
-					.queryParam("iban", accountIban)
-					.build())
+				.queryParam("iban", accountIban)
+				.build())
 				.retrieve()
 				.bodyToFlux(Object.class)
 				.collectList()

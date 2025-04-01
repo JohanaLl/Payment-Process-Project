@@ -26,7 +26,7 @@ public class TransactionServiceImpl extends CommonServiceImpl<Transaction, Trans
     		.filter(trx -> trx.getFee() > 0 && trx.getAmount() > trx.getFee())
     		.ifPresent(trx -> trx.setAmount(trx.getAmount() - trx.getFee()));
     	
-    	transaction.setStatus(transaction.updateStatus(transaction));
+//    	transaction.setStatus(transaction.updateStatus(transaction));
     	
         return repository.save(transaction);
     }
