@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -38,12 +39,15 @@ import reactor.netty.http.client.HttpClient;
 @RequestMapping("/api/customer")
 public class CustomerController extends CommonController<Customer, CustormerService>{
 
-	//WEBFLUX COMUNICACION HTTP - Cliente API
-	private final WebClient.Builder webClientBuilder;
+	@Autowired
+	private WebClient.Builder webClientBuilder;
 	
-	public CustomerController(CustormerService service, WebClient.Builder webClientBuilder) {
+	//WEBFLUX COMUNICACION HTTP - Cliente API
+//	private final WebClient.Builder webClientBuilder;
+	
+	public CustomerController(CustormerService service) { //WebClient.Builder webClientBuilder
 		super(service);
-		this.webClientBuilder = webClientBuilder;
+//		this.webClientBuilder = webClientBuilder;
 	}
 
 	
@@ -110,8 +114,8 @@ public class CustomerController extends CommonController<Customer, CustormerServ
 			x.setProductName(productName); 
 		});
 		
-		List<?> transactions = getTansactions(customer.getIban());
-		customer.setTransaccions(transactions);
+//		List<?> transactions = getTansactions(customer.getIban());
+//		customer.setTransaccions(transactions);
 		
 		return customer;
 	}
@@ -125,9 +129,8 @@ public class CustomerController extends CommonController<Customer, CustormerServ
 	private String getProductName(long id) {
 		
 		WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-				.baseUrl("http://localhost:47152/api/product")
+				.baseUrl("http://PRODUCT-SERVICE/api/product")
 				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-//				.defaultUriVariables(Collections.singletonMap("url", "http://localhost:47152/api/product"))
 				.build();
 		
 		JsonNode block = build.method(HttpMethod.GET)
