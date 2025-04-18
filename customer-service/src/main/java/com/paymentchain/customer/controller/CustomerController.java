@@ -114,8 +114,8 @@ public class CustomerController extends CommonController<Customer, CustormerServ
 			x.setProductName(productName); 
 		});
 		
-//		List<?> transactions = getTansactions(customer.getIban());
-//		customer.setTransaccions(transactions);
+		List<?> transactions = getTansactions(customer.getIban());
+		customer.setTransaccions(transactions);
 		
 		return customer;
 	}
@@ -152,7 +152,7 @@ public class CustomerController extends CommonController<Customer, CustormerServ
 	private List<?> getTansactions(String accountIban) {
 		
 		WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-				.baseUrl("http://localhost:47153/api/transaction")
+				.baseUrl("http://TRASACTION-SERVICE/api/transaction")
 				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.build();
 		
