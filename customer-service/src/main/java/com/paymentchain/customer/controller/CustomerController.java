@@ -36,7 +36,7 @@ import io.netty.handler.timeout.WriteTimeoutHandler;
 import reactor.netty.http.client.HttpClient;
 
 @RestController
-@RequestMapping("/api/customer")
+@RequestMapping("/api/customer/V1")
 public class CustomerController extends CommonController<Customer, CustormerService>{
 
 	@Autowired
