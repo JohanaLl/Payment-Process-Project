@@ -1,22 +1,25 @@
 package com.paymentchain.customer.bussines.transaction;
 
 import java.time.Duration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.paymentchain.common.controller.CommonController;
 import com.paymentchain.customer.entity.Customer;
 import com.paymentchain.customer.entity.CustomerProduct;
+import com.paymentchain.customer.exception.BussinesRuleException;
 import com.paymentchain.customer.service.CustormerService;
 
 import io.netty.channel.ChannelOption;
@@ -102,8 +105,12 @@ public class BussinesTransaction extends CommonController<Customer, CustormerSer
 		return transactions;
 	}
 	
-
-	public Customer getByCode(@RequestParam String code) {
+	/**
+	 * Metodo que devuelve un cliente por su código y asigna el nombre de cada producto del cliente
+	 * @param code
+	 * @return
+	 */
+	public Customer getByCode(String code) {
 		
 		Customer customer = service.findByCode(code);
 		List<CustomerProduct> products = customer.getProducts();
@@ -118,5 +125,28 @@ public class BussinesTransaction extends CommonController<Customer, CustormerSer
 		customer.setTransaccions(transactions);
 		
 		return customer;
+	}
+	
+	/**
+	 * Metodo para crear clientes y asignarle los products que llegan en la creación
+	 * @throws BussinesRuleException 
+	 */
+	public Customer postCreate(Customer customer) throws BussinesRuleException {
+		if (customer.getProducts() != null) {
+			for (Iterator <CustomerProduct> itCP = customer.getProducts().iterator(); itCP.hasNext();) {
+				CustomerProduct dto = itCP.next();
+				String productName = getProductName(dto.getProductId());
+				if (productName.isBlank()) {
+					BussinesRuleException bussinesRuleException = new BussinesRuleException("1025", "Error validacion, producto con id " + dto.getProductId() + " no existe", HttpStatus.PRECONDITION_FAILED);
+					throw bussinesRuleException;
+				} else {
+					dto.setCustomer(customer);
+				}
+				
+			}
+		}
+		
+		Customer custormerDB = service.save(customer);
+		return custormerDB;
 	}
 }

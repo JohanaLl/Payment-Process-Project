@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.paymentchain.common.controller.CommonController;
 import com.paymentchain.customer.bussines.transaction.BussinesTransaction;
 import com.paymentchain.customer.entity.Customer;
+import com.paymentchain.customer.exception.BussinesRuleException;
 import com.paymentchain.customer.service.CustormerService;
 
 @RestController
@@ -50,14 +51,14 @@ public class CustomerController extends CommonController<Customer, CustormerServ
 	
 	/**
 	 * Metodo para crear clientes y asignarle los products que llegan en la creación
+	 * @throws BussinesRuleException 
 	 */
-	@PostMapping
-	public ResponseEntity<?> create(@RequestBody Customer customer) {
-		//Asignar el cliente a cada uno de los productos
-		customer.getProducts().forEach(x -> x.setCustomer(customer));
-		Customer custormerDB = service.save(customer);
-		return ResponseEntity.status(HttpStatus.CREATED).body(custormerDB);
+	@PostMapping("/postCreate")
+	public ResponseEntity<?> postCreate(@RequestBody Customer customer) throws BussinesRuleException {
+		Customer cust = bt.postCreate(customer);
+		return ResponseEntity.status(HttpStatus.CREATED).body(cust);
 	}
+	
 	
 	/**
 	 * Metodo que devuelve un cliente por su código y asigna el nombre de cada producto del cliente
