@@ -1,4 +1,4 @@
-package com.paymentchain.admin;
+package com.paymentchain.product;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
