@@ -1,5 +1,6 @@
 package com.paymentchain.customer.controller;
 
+import java.net.UnknownHostException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +53,10 @@ public class CustomerController extends CommonController<Customer, CustormerServ
 	/**
 	 * Metodo para crear clientes y asignarle los products que llegan en la creación
 	 * @throws BussinesRuleException 
+	 * @throws UnknownHostException 
 	 */
 	@PostMapping("/postCreate")
-	public ResponseEntity<?> postCreate(@RequestBody Customer customer) throws BussinesRuleException {
+	public ResponseEntity<?> postCreate(@RequestBody Customer customer) throws BussinesRuleException, UnknownHostException {
 		Customer cust = bt.postCreate(customer);
 		return ResponseEntity.status(HttpStatus.CREATED).body(cust);
 	}

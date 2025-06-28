@@ -1,5 +1,6 @@
 package com.paymentchain.customer.bussines.transaction;
 
+import java.net.UnknownHostException;
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.List;
@@ -9,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.paymentchain.common.controller.CommonController;
@@ -62,21 +65,33 @@ public class BussinesTransaction extends CommonController<Customer, CustormerSer
 	 * Método para Obtener todos los productos de un cliente
 	 * @param id
 	 * @return
+	 * @throws UnknownHostException 
 	 */
-	private String getProductName(long id) {
+	private String getProductName(long id) throws UnknownHostException {
 		
-		WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-				.baseUrl("http://PRODUCT-SERVICE/api/product")
-				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-				.build();
+		String name = "";
+		try {
+			WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
+					.baseUrl("http://PRODUCT-SERVICE/api/product")
+					.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+					.build();
+			
+			JsonNode block = build.method(HttpMethod.GET)
+					.uri("/" + id)
+					.retrieve()
+					.bodyToMono(JsonNode.class)
+					.block();
+			
+			name = block.get("name").asText();
+			
+		} catch (WebClientResponseException e) {
+			if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+				return "";
+			} else {
+				throw new UnknownHostException(e.getMessage());
+			}
+		}
 		
-		JsonNode block = build.method(HttpMethod.GET)
-				.uri("/" + id)
-				.retrieve()
-				.bodyToMono(JsonNode.class)
-				.block();
-		
-		String name = block.get("name").asText();
 		return name;
 		
 	}
@@ -117,8 +132,14 @@ public class BussinesTransaction extends CommonController<Customer, CustormerSer
 		
 		//Obtener el nombre de cada producto
 		products.forEach(x -> {
-			String productName = getProductName(x.getId());
-			x.setProductName(productName); 
+			String productName;
+			try {
+				productName = getProductName(x.getId());
+				x.setProductName(productName); 
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+			
 		});
 		
 		List<?> transactions = getTansactions(customer.getIban());
@@ -131,7 +152,7 @@ public class BussinesTransaction extends CommonController<Customer, CustormerSer
 	 * Metodo para crear clientes y asignarle los products que llegan en la creación
 	 * @throws BussinesRuleException 
 	 */
-	public Customer postCreate(Customer customer) throws BussinesRuleException {
+	public Customer postCreate(Customer customer) throws BussinesRuleException, UnknownHostException {
 		if (customer.getProducts() != null) {
 			for (Iterator <CustomerProduct> itCP = customer.getProducts().iterator(); itCP.hasNext();) {
 				CustomerProduct dto = itCP.next();
