@@ -7,6 +7,6 @@ package com.paymentchain.trasaction.exception;
 public class TransactionNotFoundException extends RuntimeException {
 
 	public TransactionNotFoundException(String iban) {
-	     super("No se encontró el transacción con cuenta: " + iban);
+	     super("No se encontró el transacción con iban: " + iban);
 	}
 }

@@ -40,9 +40,9 @@ public class TransactionServiceImpl extends CommonServiceImpl<Transaction, Trans
     	
     	List<Transaction> transactions = repository.findByIban(iban);
     	
-    	if (transactions == null) {
-			throw new TransactionNotFoundException(iban);
-		}
+//    	if (transactions.isEmpty())
+//			throw new TransactionNotFoundException(iban);
+
     			
     	return transactions;
     }

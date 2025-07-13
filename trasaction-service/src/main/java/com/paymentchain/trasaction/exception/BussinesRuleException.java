@@ -1,4 +1,4 @@
-package com.paymentchain.product.exception;
+package com.paymentchain.trasaction.exception;
 
 import org.springframework.http.HttpStatus;
 
@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class BussinesRuleException extends Exception {
+public class BussinesRuleException  extends Exception {
 
 	private long id;
 	private String code;

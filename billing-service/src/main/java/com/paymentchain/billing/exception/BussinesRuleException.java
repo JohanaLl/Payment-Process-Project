@@ -1,4 +1,4 @@
-package com.paymentchain.product.exception;
+package com.paymentchain.billing.exception;
 
 import org.springframework.http.HttpStatus;
 
@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class BussinesRuleException extends Exception {
+public class BussinesRuleException  extends Exception {
 
 	private long id;
 	private String code;
@@ -20,8 +20,9 @@ public class BussinesRuleException extends Exception {
 		this.httpStatus = httpStatus;
 	}
 	
-	public BussinesRuleException(String message, HttpStatus preconditionFailed) {
+	public BussinesRuleException(String code, String message, HttpStatus preconditionFailed) {
 		super(message);
+		this.code = code;
 		this.httpStatus = preconditionFailed;
 	}
 	

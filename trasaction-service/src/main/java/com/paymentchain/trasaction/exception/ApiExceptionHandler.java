@@ -1,4 +1,4 @@
-package com.paymentchain.product.exception;
+package com.paymentchain.trasaction.exception;
 
 import java.util.Locale;
 
@@ -10,17 +10,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paymentchain.product.common.StandarizedApiExceptionresponse;
+import com.paymentchain.trasaction.common.StandarizedApiExceptionresponse;
+
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
-
+	
 	@Autowired
 	private MessageSource messageSource;
 	
 	@Autowired
 	private ObjectMapper objectMapper;
-	
+
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<?> handleUnknownHostException(Exception ex) {
 		StandarizedApiExceptionresponse standarizedApiExceptionresponse = new StandarizedApiExceptionresponse
@@ -34,18 +35,17 @@ public class ApiExceptionHandler {
 		ErrorMessage errorMessage = null;
 		String message = messageSource.getMessage(ex.getMessage(), null, locale);
 		
-	    try {
-	    	errorMessage = objectMapper.readValue(message, ErrorMessage.class);
-	    } catch (Exception e) {
-	    	errorMessage.setCode("UNKNOWN");
-	    }
-
+		try {
+			errorMessage = objectMapper.readValue(message, ErrorMessage.class);
+		} catch (Exception e) {
+			errorMessage.setCode("UNKNOWN");
+		}
+		
 		StandarizedApiExceptionresponse standarizedApiExceptionresponse = new StandarizedApiExceptionresponse(
 				"BUSSINES", 
 				"Error de validacion", 
 				errorMessage.getCode(), 
 				errorMessage.getMessage());
-		
 		return ResponseEntity.status(ex.getHttpStatus()).body(standarizedApiExceptionresponse);
 	}
 }
