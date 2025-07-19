@@ -1,4 +1,4 @@
-package com.paymentchain.account.entity;
+package com.paymentchain.account.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +12,8 @@ public class Account {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+	
 	private String iban;
 	
 	private double balance;

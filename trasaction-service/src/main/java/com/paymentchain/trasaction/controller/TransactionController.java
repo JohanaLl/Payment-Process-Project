@@ -22,7 +22,7 @@ import com.paymentchain.trasaction.utils.UtilString;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
-@RequestMapping("/api/transaction")
+@RequestMapping("/transaction")
 public class TransactionController extends CommonController<Transaction, TransactionService>{
 
 	public TransactionController(TransactionService service) {

@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -108,24 +106,30 @@ public class BussinesTransaction extends CommonController<Customer, CustormerSer
 				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.build();
 		
-		List<?> transactions = build.get()
-				.uri(uriBuilder -> uriBuilder.path("/customer/transactions")
-				.queryParam("iban", accountIban)
-				.build())
+//		List<?> transactions = build.get()
+//				.uri(uriBuilder -> uriBuilder.path("/customer/transactions")
+//				.queryParam("iban", accountIban)
+//				.build())
+//				.retrieve()
+//				.bodyToFlux(Object.class)
+//				.collectList()
+//				.block();
+		
+		List<?> transactions = (List<?>) build.method(HttpMethod.GET)
+				.uri("/" + accountIban)
 				.retrieve()
-				.bodyToFlux(Object.class)
-				.collectList()
-				.block();		
+				.bodyToMono(JsonNode.class)
+				.block();;
 		
 		return transactions;
 	}
 	
 	/**
-	 * Metodo que devuelve un cliente por su código y asigna el nombre de cada producto del cliente
+	 * Metodo que devuelve un cliente por su código y asigna los productos y las transacciones del cliente
 	 * @param code
 	 * @return
 	 */
-	public Customer getByCode(String code) {
+	public Customer getFullCustomer(String code) {
 		
 		Customer customer = service.findByCode(code);
 		List<CustomerProduct> products = customer.getProducts();
@@ -134,7 +138,7 @@ public class BussinesTransaction extends CommonController<Customer, CustormerSer
 		products.forEach(x -> {
 			String productName;
 			try {
-				productName = getProductName(x.getId());
+				productName = getProductName(x.getId());  //obtener el nombre y id de cada cliente
 				x.setProductName(productName); 
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
@@ -142,8 +146,8 @@ public class BussinesTransaction extends CommonController<Customer, CustormerSer
 			
 		});
 		
-		List<?> transactions = getTansactions(customer.getIban());
-		customer.setTransaccions(transactions);
+//		List<?> transactions = getTansactions(customer.getIban());
+//		customer.setTransaccions(transactions);
 		
 		return customer;
 	}

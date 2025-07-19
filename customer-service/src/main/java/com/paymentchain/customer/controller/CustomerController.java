@@ -22,13 +22,13 @@ import com.paymentchain.customer.exception.BussinesRuleException;
 import com.paymentchain.customer.service.CustormerService;
 
 @RestController
-@RequestMapping("/api/customer/V1")
+@RequestMapping("/customer")
 public class CustomerController extends CommonController<Customer, CustormerService>{
 
 	@Autowired
 	BussinesTransaction bt;
 	
-	public CustomerController(CustormerService service) { //WebClient.Builder webClientBuilder
+	public CustomerController(CustormerService service) {
 		super(service);
 	}
 
@@ -68,9 +68,9 @@ public class CustomerController extends CommonController<Customer, CustormerServ
 	 * @return
 	 */
 	@GetMapping("/full")
-	public Customer getByCode(@RequestParam String code) {
+	public Customer getFullCustomer(@RequestParam String code) {
 		
-		Customer customer = bt.getByCode(code);
+		Customer customer = bt.getFullCustomer(code);
 		return customer;
 	}
 

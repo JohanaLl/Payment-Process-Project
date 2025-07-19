@@ -18,7 +18,7 @@ import com.paymentchain.product.service.ProductService;
 import com.paymentchain.product.utils.UtilString;
 
 @RestController
-@RequestMapping("/api/product/V1")
+@RequestMapping("/product")
 public class ProductController extends CommonController<Product, ProductService>{
 
 	public ProductController(ProductService service) {
