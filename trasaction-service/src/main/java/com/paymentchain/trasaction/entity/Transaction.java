@@ -35,7 +35,7 @@ public class Transaction {
 	private double fee;
 	
 	//Descripción breve de la transacción
-	private String description;
+	private Type description;
 	
 	//Guarda el estado de la transacción
 	@Enumerated(EnumType.STRING)
@@ -55,5 +55,13 @@ public class Transaction {
         		: Status.SETTLED;
         
         return status;
+    }
+    
+    public Type updateType(Transaction transaction) {
+    	this.description = transaction.getAmount() > 0 
+    			? Type.ABONO
+    			: Type.RETIRO;  
+    	
+    	return description;
     }
 }

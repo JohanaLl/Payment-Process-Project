@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,8 +19,6 @@ import com.paymentchain.trasaction.entity.Transaction;
 import com.paymentchain.trasaction.exception.BussinesRuleException;
 import com.paymentchain.trasaction.service.TransactionService;
 import com.paymentchain.trasaction.utils.UtilString;
-
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/transaction")
@@ -35,20 +34,23 @@ public class TransactionController extends CommonController<Transaction, Transac
 	 */
 	@PostMapping("/valid")
 	public ResponseEntity<?> createWithValid(@RequestBody Transaction trx) throws BussinesRuleException {
-		if (!UtilString.findIsNull(trx.getId().toString()) || !UtilString.findIsNull(trx.getReference())) {
+		//Validación de campos obligatorios
+		if (UtilString.findIsNull(trx.getId().toString()) || UtilString.findIsNull(trx.getReference())) {
 			BussinesRuleException bussinesRuleException = new BussinesRuleException("error.validation.transaction.id.ref.isempty", HttpStatus.PRECONDITION_FAILED);
 			throw bussinesRuleException;
 		}
+		//Validación de PK
 		Transaction trxDB = service.create(trx);
 		return ResponseEntity.status(HttpStatus.CREATED).body(trxDB);
 	}
 	
 	/**
-	 * Método para buscar las transacciones por iban
+	 * Método para buscar las transacciones de un cliente por iban
 	 * @throws BussinesRuleException 
 	 */
 	@GetMapping("/customer/transactions")
 	public List<Transaction> findByIban(@RequestParam String iban) throws BussinesRuleException {
+		
 		List<Transaction> transactions = service.findByIban(iban);
 		
 		if (transactions.isEmpty()) {

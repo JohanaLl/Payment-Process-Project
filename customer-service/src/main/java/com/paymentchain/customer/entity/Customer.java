@@ -37,4 +37,7 @@ public class Customer {
 	
 	@Transient
 	private List<?> transaccions;
+	
+	@Transient
+	private List<?> accounts;
 }

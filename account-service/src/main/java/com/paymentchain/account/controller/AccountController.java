@@ -1,6 +1,10 @@
 package com.paymentchain.account.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paymentchain.account.entities.Account;
@@ -17,4 +21,16 @@ public class AccountController extends CommonController<Account, AccountService>
 	}
 
 
+	/**
+	 * Método para buscar las cuentas de un cliente por cliente id
+	 * @param custId
+	 * @return
+	 */
+	@GetMapping("/customer/accounts")
+	public List<Account> getAccountsByCustId(@RequestParam Long custId) {
+		
+		List<Account> accounts = service.findByCustId(custId);
+		
+		return accounts;
+	}
 }

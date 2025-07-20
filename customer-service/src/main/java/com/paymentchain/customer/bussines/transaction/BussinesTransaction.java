@@ -106,22 +106,35 @@ public class BussinesTransaction extends CommonController<Customer, CustormerSer
 				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.build();
 		
-//		List<?> transactions = build.get()
-//				.uri(uriBuilder -> uriBuilder.path("/customer/transactions")
-//				.queryParam("iban", accountIban)
-//				.build())
-//				.retrieve()
-//				.bodyToFlux(Object.class)
-//				.collectList()
-//				.block();
-		
-		List<?> transactions = (List<?>) build.method(HttpMethod.GET)
-				.uri("/" + accountIban)
+		List<?> transactions = build.get()
+				.uri(uriBuilder -> uriBuilder.path("/customer/transactions")
+				.queryParam("iban", accountIban)
+				.build())
 				.retrieve()
-				.bodyToMono(JsonNode.class)
-				.block();;
+				.bodyToFlux(Object.class)
+				.collectList()
+				.block();
 		
 		return transactions;
+	}
+	
+	private List<?> getAccounts(Long id) {
+		
+		WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
+				.baseUrl("http://ACCOUNT-SERVICE/api/account")
+				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.build();
+		
+		List<?> accounts = build.get()
+				.uri(uriBuilder -> uriBuilder.path("/customer/accounts")
+				.queryParam("custId", id)
+				.build())
+				.retrieve()
+				.bodyToFlux(Object.class)
+				.collectList()
+				.block();
+		
+		return accounts;
 	}
 	
 	/**
@@ -146,8 +159,11 @@ public class BussinesTransaction extends CommonController<Customer, CustormerSer
 			
 		});
 		
-//		List<?> transactions = getTansactions(customer.getIban());
-//		customer.setTransaccions(transactions);
+		List<?> transactions = getTansactions(customer.getIban());
+		customer.setTransaccions(transactions);
+		
+		List<?> accounts = getAccounts(customer.getId());
+		customer.setAccounts(accounts);
 		
 		return customer;
 	}
