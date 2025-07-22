@@ -14,4 +14,10 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	 */
 	@Query(value = "SELECT t FROM Transaction t WHERE t.accountIban = ?1")
 	public List<Transaction> findByIban(String iban);
+	
+	/**
+	 * Buscar transacciones por numero de referencia
+	 */
+	@Query(value = "SELECT t FROM Transaction t WHERE t.reference = ?1")
+	public Transaction findByReference(String reference);
 }

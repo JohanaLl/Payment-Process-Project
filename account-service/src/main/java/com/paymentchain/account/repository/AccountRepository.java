@@ -16,5 +16,13 @@ public interface AccountRepository extends CrudRepository<Account, Long>{
 	 * @return
 	 */
 	@Query(value = "SELECT a FROM Account a WHERE a.customerId = ?1")
-	public List<Account> findByCustId(Long custId);
+	public List<Account> findByCustId(String custId);
+	
+	/**
+	 * Método para buscar cuentas por iban
+	 * @param custId
+	 * @return
+	 */
+	@Query(value = "SELECT a FROM Account a WHERE a.iban = ?1")
+	public Account findByIban(String iban);
 }

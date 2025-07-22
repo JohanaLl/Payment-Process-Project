@@ -9,6 +9,14 @@ public interface TransactionService extends CommonService<Transaction>{
 
 	public Transaction create(Transaction transaction);
 	
+	/**
+	 * Buscar transacciones por numero de iban
+	 */
 	public List<Transaction> findByIban(String iban);
+	
+	/**
+	 * Buscar transacciones por numero de referencia
+	 */
+	public Transaction findByReference(String reference);
 	
 }

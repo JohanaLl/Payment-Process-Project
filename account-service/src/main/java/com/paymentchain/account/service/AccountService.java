@@ -12,6 +12,13 @@ public interface AccountService extends CommonService<Account> {
 	 * @param custId
 	 * @return
 	 */
-	public List<Account> findByCustId(Long custId);
+	public List<Account> findByCustId(String custId);
 	
+	
+	/**
+	 * Método para buscar cuentas por iban
+	 * @param custId
+	 * @return
+	 */
+	public Account findByIban(String iban);
 }

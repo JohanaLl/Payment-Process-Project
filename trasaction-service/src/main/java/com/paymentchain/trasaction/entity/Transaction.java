@@ -35,6 +35,7 @@ public class Transaction {
 	private double fee;
 	
 	//Descripción breve de la transacción
+	@Enumerated(EnumType.STRING)
 	private Type description;
 	
 	//Guarda el estado de la transacción
@@ -57,11 +58,21 @@ public class Transaction {
         return status;
     }
     
+    /**
+     * Método para calcular el tipo de transacción de acuerdo al valor
+     * @param transaction
+     * @return
+     */
     public Type updateType(Transaction transaction) {
     	this.description = transaction.getAmount() > 0 
     			? Type.ABONO
     			: Type.RETIRO;  
     	
     	return description;
+    }
+    
+    
+    public double getFee() {
+    	return this.fee = 0.98;
     }
 }

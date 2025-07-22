@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
@@ -75,7 +77,7 @@ public class BussinesTransaction extends CommonController<Customer, CustormerSer
 					.build();
 			
 			JsonNode block = build.method(HttpMethod.GET)
-					.uri("/" + id)
+					.uri("/" + id) //@PathVariable
 					.retrieve()
 					.bodyToMono(JsonNode.class)
 					.block();
@@ -108,7 +110,7 @@ public class BussinesTransaction extends CommonController<Customer, CustormerSer
 		
 		List<?> transactions = build.get()
 				.uri(uriBuilder -> uriBuilder.path("/customer/transactions")
-				.queryParam("iban", accountIban)
+				.queryParam("iban", accountIban) //@RequestParam
 				.build())
 				.retrieve()
 				.bodyToFlux(Object.class)
@@ -118,7 +120,12 @@ public class BussinesTransaction extends CommonController<Customer, CustormerSer
 		return transactions;
 	}
 	
-	private List<?> getAccounts(Long id) {
+	/**
+	 * Método para obtener todas las cuentas asociadas a un cliente
+	 * @param id
+	 * @return
+	 */
+	private List<?> getAccounts(String code) {
 		
 		WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
 				.baseUrl("http://ACCOUNT-SERVICE/api/account")
@@ -127,7 +134,7 @@ public class BussinesTransaction extends CommonController<Customer, CustormerSer
 		
 		List<?> accounts = build.get()
 				.uri(uriBuilder -> uriBuilder.path("/customer/accounts")
-				.queryParam("custId", id)
+				.queryParam("custId", code)
 				.build())
 				.retrieve()
 				.bodyToFlux(Object.class)
@@ -162,7 +169,7 @@ public class BussinesTransaction extends CommonController<Customer, CustormerSer
 		List<?> transactions = getTansactions(customer.getIban());
 		customer.setTransaccions(transactions);
 		
-		List<?> accounts = getAccounts(customer.getId());
+		List<?> accounts = getAccounts(customer.getCode());
 		customer.setAccounts(accounts);
 		
 		return customer;

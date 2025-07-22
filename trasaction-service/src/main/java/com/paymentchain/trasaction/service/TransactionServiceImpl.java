@@ -20,13 +20,6 @@ public class TransactionServiceImpl extends CommonServiceImpl<Transaction, Trans
     @Override
     @Transactional
     public Transaction create(Transaction transaction) {
-    
-    	Optional.of(transaction)
-    		.filter(trx -> trx.getFee() > 0 && trx.getAmount() > trx.getFee())
-    		.ifPresent(trx -> trx.setAmount(trx.getAmount() - trx.getFee()));
-    	
-    	transaction.setStatus(transaction.updateStatus(transaction));
-    	
         return repository.save(transaction);
     }
     
@@ -36,10 +29,17 @@ public class TransactionServiceImpl extends CommonServiceImpl<Transaction, Trans
     @Override
     @Transactional(readOnly = true)
     public List<Transaction> findByIban(String iban) {
-    	
-    	List<Transaction> transactions = repository.findByIban(iban);
-    			
+    	List<Transaction> transactions = repository.findByIban(iban);	
     	return transactions;
     }
+
+    /**
+	 * Buscar transacciones por numero de referencia
+	 */
+	@Override
+	public Transaction findByReference(String reference) {
+		Transaction transaction = repository.findByReference(reference);
+		return transaction;
+	}
 
 }

@@ -24,11 +24,25 @@ public class AccountServiceImpl extends CommonServiceImpl<Account, AccountReposi
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<Account> findByCustId(Long custId) {
+	public List<Account> findByCustId(String custId) {
 		
 		List<Account> accounts = repository.findByCustId(custId);
 		
 		return accounts;
+	}
+
+	/**
+	 * Método para buscar cuentas por iban
+	 * @param custId
+	 * @return
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public Account findByIban(String iban) {
+		
+		Account account = repository.findByIban(iban);
+		
+		return account;
 	}
 
 	

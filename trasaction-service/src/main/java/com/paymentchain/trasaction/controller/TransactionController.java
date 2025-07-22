@@ -3,6 +3,7 @@ package com.paymentchain.trasaction.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paymentchain.common.controller.CommonController;
+import com.paymentchain.trasaction.bussines.transaction.BussinesTransaction;
 import com.paymentchain.trasaction.entity.Transaction;
 import com.paymentchain.trasaction.exception.BussinesRuleException;
 import com.paymentchain.trasaction.service.TransactionService;
@@ -24,6 +26,9 @@ import com.paymentchain.trasaction.utils.UtilString;
 @RequestMapping("/transaction")
 public class TransactionController extends CommonController<Transaction, TransactionService>{
 
+	@Autowired
+	BussinesTransaction bt;
+	
 	public TransactionController(TransactionService service) {
 		super(service);
 	}
@@ -32,15 +37,9 @@ public class TransactionController extends CommonController<Transaction, Transac
 	 * Método para crear transacciones
 	 * @throws BussinesRuleException 
 	 */
-	@PostMapping("/valid")
-	public ResponseEntity<?> createWithValid(@RequestBody Transaction trx) throws BussinesRuleException {
-		//Validación de campos obligatorios
-		if (UtilString.findIsNull(trx.getId().toString()) || UtilString.findIsNull(trx.getReference())) {
-			BussinesRuleException bussinesRuleException = new BussinesRuleException("error.validation.transaction.id.ref.isempty", HttpStatus.PRECONDITION_FAILED);
-			throw bussinesRuleException;
-		}
-		//Validación de PK
-		Transaction trxDB = service.create(trx);
+	@PostMapping("/createTRX")
+	public ResponseEntity<?> createTRX(@RequestBody Transaction trx) throws BussinesRuleException {
+		Transaction trxDB = bt.createTrx(trx);
 		return ResponseEntity.status(HttpStatus.CREATED).body(trxDB);
 	}
 	
@@ -50,7 +49,6 @@ public class TransactionController extends CommonController<Transaction, Transac
 	 */
 	@GetMapping("/customer/transactions")
 	public List<Transaction> findByIban(@RequestParam String iban) throws BussinesRuleException {
-		
 		List<Transaction> transactions = service.findByIban(iban);
 		
 		if (transactions.isEmpty()) {
@@ -58,6 +56,18 @@ public class TransactionController extends CommonController<Transaction, Transac
 			throw bussinesRuleException;
 		}
 		return transactions;
+	}
+	
+	/**
+	 * Método para buscar transacciones por numero de referencia
+	 * @param reference
+	 * @return
+	 * @throws BussinesRuleException
+	 */
+	@GetMapping("byReference/{reference}")
+	public Transaction findByReference(@PathVariable String reference) throws BussinesRuleException {
+		Transaction transaction = service.findByReference(reference);
+		return transaction;
 	}
 	
 	/**
@@ -83,18 +93,4 @@ public class TransactionController extends CommonController<Transaction, Transac
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(transactionDB));
 	}
-	
-	public Double validarSaldo(Transaction trx) {
-		
-		double saldo = 0;
-		
-		if (trx.getAmount() > 0) {
-			saldo += trx.getAmount();
-		} else {
-			saldo -= trx.getAmount();
-		}
-		
-		return saldo;
-	}
-
 }

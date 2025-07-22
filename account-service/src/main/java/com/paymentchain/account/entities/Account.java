@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Entity
@@ -18,7 +19,10 @@ public class Account {
 	
 	private double balance;
 	
-	private Long customerId;
+	private String customerId;
 	
 	private String accountType;
+	
+	@Transient
+	private double trxAmount;
 }
