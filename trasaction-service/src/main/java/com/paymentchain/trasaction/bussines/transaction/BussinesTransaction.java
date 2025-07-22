@@ -112,4 +112,49 @@ public class BussinesTransaction extends CommonController<Transaction, Transacti
 			return false;
 		}
 	}
+	
+	public String greetOne() {
+		String one = getGreetOne();
+		return one;
+	}
+	public String greetTwo(String trx) {
+		String two = getGreetTwo(trx);
+		return two;
+	}
+	
+	private String getGreetOne() {
+		
+		WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
+				.baseUrl("http://ACCOUNT-SERVICE/api/account")
+				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.build();
+		
+
+		String greeting = build.get()
+			 	.uri("/greetingOne") //@PathVariable
+				.retrieve()
+				.bodyToMono(String.class)
+				.block();
+			 
+		return greeting;
+
+	}
+	
+	private String getGreetTwo(String trx) {
+		
+		WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
+				.baseUrl("http://account-service/api/account")
+				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.build();
+		
+		String greeting = build.get()
+				.uri(uriBuilder -> uriBuilder.path("/greetingTwo")
+				.queryParam("trx", trx) //@RequestParam
+				.build())
+				.retrieve()
+				.bodyToMono(String.class)
+				.block();
+		
+		return greeting;
+	}
 }

@@ -42,4 +42,13 @@ public class AccountController extends CommonController<Account, AccountService>
 		return ResponseEntity.ok(account);
 	}
 	
+	@GetMapping("/greetingOne")
+	public String greetingOne() {
+		return "Hello from account @PathVariable";
+	}
+	
+	@GetMapping("/greetingTwo")
+	public String greetingTwo(@RequestParam String greet) {
+		return "Hello from account @RequestParam";
+	}
 }
