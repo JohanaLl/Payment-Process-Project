@@ -143,7 +143,7 @@ public class BussinesTransaction extends CommonController<Transaction, Transacti
 	private String getGreetTwo(String trx) {
 		
 		WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-				.baseUrl("http://account-service/api/account")
+				.baseUrl("http://ACCOUNT-SERVICE/api/account")
 				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.build();
 		
