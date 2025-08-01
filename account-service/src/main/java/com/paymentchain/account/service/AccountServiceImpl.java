@@ -1,6 +1,7 @@
 package com.paymentchain.account.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,9 +39,9 @@ public class AccountServiceImpl extends CommonServiceImpl<Account, AccountReposi
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public Account findByIban(String iban) {
+	public Optional<Account> findByIban(String iban) {
 		
-		Account account = repository.findByIban(iban);
+		Optional<Account> account = repository.findByIban(iban);
 		
 		return account;
 	}

@@ -23,6 +23,4 @@ public class Account {
 	
 	private String accountType;
 	
-	@Transient
-	private double trxAmount;
 }

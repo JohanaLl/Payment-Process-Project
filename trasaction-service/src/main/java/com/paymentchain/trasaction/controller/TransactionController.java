@@ -94,15 +94,4 @@ public class TransactionController extends CommonController<Transaction, Transac
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(transactionDB));
 	}
 	
-	@GetMapping("/greetOneFromTrx")
-	public String greetingOne() {
-		String greeting = bt.greetOne();
-		return greeting;
-	}
-	
-	@GetMapping("/greetTwoFromTrx")
-	public String greetingTwo(@RequestParam String greet) {
-		String greeting = bt.greetTwo(greet);
-		return greeting;
-	}
 }

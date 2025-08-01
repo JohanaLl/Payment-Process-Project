@@ -1,10 +1,14 @@
 package com.paymentchain.account.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,21 +38,34 @@ public class AccountController extends CommonController<Account, AccountService>
 		return accounts;
 	}
 	
-	@GetMapping("byIban/{iban}")
-	public ResponseEntity<Account> findByIban(@PathVariable String iban) {
-		Account account = service.findByIban(iban);
-		if (account == null) 
+	/**
+	 * Método para buscar cuentas por iban
+	 * @param iban
+	 * @return
+	 */
+	@GetMapping("/byIban/{iban}")
+	public ResponseEntity<Optional<Account>> findByIban(@PathVariable String iban) {
+		Optional<Account> account = service.findByIban(iban);
+		
+		if (!account.isPresent()) 
 			return ResponseEntity.notFound().build();
+		
 		return ResponseEntity.ok(account);
 	}
 	
-	@GetMapping("/greetingOne")
-	public String greetingOne() {
-		return "Hello from account @PathVariable";
+	@PutMapping("/modifyBanlance/{accountIban}/{amount}")
+	public ResponseEntity<?> modifyBalance(@PathVariable("accountIban") String accountIban, @PathVariable("amount") double amount) {
+		Optional<Account> account = service.findByIban(accountIban);
+		System.out.println("iban " + accountIban);
+		System.out.println("amount " + amount);
+		
+		if (!account.isPresent()) 
+			return ResponseEntity.notFound().build();
+		
+		Account accountDB = account.get();
+		accountDB.setBalance(accountDB.getBalance()  + amount);
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(accountDB));
 	}
 	
-	@GetMapping("/greetingTwo")
-	public String greetingTwo(@RequestParam String greet) {
-		return "Hello from account @RequestParam";
-	}
 }

@@ -1,13 +1,10 @@
 package com.paymentchain.trasaction.bussines.transaction;
 
 import java.time.Duration;
-import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -15,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException.NotFound;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.paymentchain.common.controller.CommonController;
 import com.paymentchain.trasaction.entity.Transaction;
 import com.paymentchain.trasaction.exception.BussinesRuleException;
@@ -72,7 +68,7 @@ public class BussinesTransaction extends CommonController<Transaction, Transacti
 				
 		Transaction transaction = service.findByReference(trx.getReference());
 		
-		//No permite crear trx con ref dublicada
+		//No permite crear trx con ref duplicada
 		if (transaction != null) {
 			BussinesRuleException bussinesRuleException = new BussinesRuleException("error.validation.transaction.ref.duplicate", HttpStatus.PRECONDITION_FAILED);
 			throw bussinesRuleException;
@@ -87,19 +83,20 @@ public class BussinesTransaction extends CommonController<Transaction, Transacti
 		Transaction trxDB = service.create(trx);
 		
     	//Actualizar el saldo de la cuenta
-//		updateAccountBalance(trx.getAccountIban(), trx.getAmount());
+		updateAccountBalance(trx.getAccountIban(), trx.getAmount() - trx.getFee());
 		
 		return trxDB;
 	}
 	
 	private boolean getAccount(String iban) {
-		
-		WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-				.baseUrl("http://ACCOUNT-SERVICE/api/account")
-				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-				.build();
-		
+
 		 try {
+			 
+			 WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
+						.baseUrl("http://ACCOUNT-SERVICE/api/account")
+						.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+						.build();
+			 
 			 build.get()
 			 	.uri("/byIban/{iban}", iban) //@PathVariable
 				.retrieve()
@@ -113,48 +110,25 @@ public class BussinesTransaction extends CommonController<Transaction, Transacti
 		}
 	}
 	
-	public String greetOne() {
-		String one = getGreetOne();
-		return one;
-	}
-	public String greetTwo(String trx) {
-		String two = getGreetTwo(trx);
-		return two;
-	}
-	
-	private String getGreetOne() {
-		
-		WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-				.baseUrl("http://ACCOUNT-SERVICE/api/account")
-				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-				.build();
-		
+	private void updateAccountBalance(String accountIban, double amount) throws BussinesRuleException {
 
-		String greeting = build.get()
-			 	.uri("/greetingOne") //@PathVariable
-				.retrieve()
-				.bodyToMono(String.class)
-				.block();
+		 try {
 			 
-		return greeting;
+			 WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
+						.baseUrl("http://ACCOUNT-SERVICE/api/account")
+						.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+						.build();
+			 
+			 build.put()
+			 	.uri("/modifyBanlance/{accountIban}/{amount}", accountIban, amount) //@PathVariable
+				.retrieve()
+				.bodyToMono(Void.class)
+				.block();
 
+		} catch (NotFound e) {
+			BussinesRuleException bussinesRuleException = new BussinesRuleException("error.update.banlace.transaction", HttpStatus.PRECONDITION_FAILED);
+			throw bussinesRuleException; 
+		}
 	}
 	
-	private String getGreetTwo(String trx) {
-		
-		WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-				.baseUrl("http://ACCOUNT-SERVICE/api/account")
-				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-				.build();
-		
-		String greeting = build.get()
-				.uri(uriBuilder -> uriBuilder.path("/greetingTwo")
-				.queryParam("trx", trx) //@RequestParam
-				.build())
-				.retrieve()
-				.bodyToMono(String.class)
-				.block();
-		
-		return greeting;
-	}
 }

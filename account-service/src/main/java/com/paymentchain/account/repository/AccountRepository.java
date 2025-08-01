@@ -2,6 +2,7 @@ package com.paymentchain.account.repository;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -24,5 +25,5 @@ public interface AccountRepository extends CrudRepository<Account, Long>{
 	 * @return
 	 */
 	@Query(value = "SELECT a FROM Account a WHERE a.iban = ?1")
-	public Account findByIban(String iban);
+	public Optional<Account> findByIban(String iban);
 }

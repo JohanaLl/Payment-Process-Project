@@ -1,6 +1,7 @@
 package com.paymentchain.account.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.paymentchain.account.entities.Account;
 import com.paymentchain.common.services.CommonService;
@@ -20,5 +21,5 @@ public interface AccountService extends CommonService<Account> {
 	 * @param custId
 	 * @return
 	 */
-	public Account findByIban(String iban);
+	public Optional<Account> findByIban(String iban);
 }
