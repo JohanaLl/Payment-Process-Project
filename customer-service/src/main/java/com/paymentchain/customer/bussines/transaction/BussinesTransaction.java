@@ -185,7 +185,7 @@ public class BussinesTransaction extends CommonController<Customer, CustormerSer
 				CustomerProduct dto = itCP.next();
 				String productName = getProductName(dto.getProductId());
 				if (productName.isBlank()) {
-					BussinesRuleException bussinesRuleException = new BussinesRuleException("1025", "Error validacion, producto con id " + dto.getProductId() + " no existe", HttpStatus.PRECONDITION_FAILED);
+					BussinesRuleException bussinesRuleException = new BussinesRuleException("error.validation.cust.not.exists", HttpStatus.PRECONDITION_FAILED);
 					throw bussinesRuleException;
 				} else {
 					dto.setCustomer(customer);

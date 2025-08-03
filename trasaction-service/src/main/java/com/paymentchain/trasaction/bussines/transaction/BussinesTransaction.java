@@ -66,9 +66,8 @@ public class BussinesTransaction extends CommonController<Transaction, Transacti
 			throw bussinesRuleException;
 		}
 				
-		Transaction transaction = service.findByReference(trx.getReference());
-		
 		//No permite crear trx con ref duplicada
+		Transaction transaction = service.findByReference(trx.getReference());
 		if (transaction != null) {
 			BussinesRuleException bussinesRuleException = new BussinesRuleException("error.validation.transaction.ref.duplicate", HttpStatus.PRECONDITION_FAILED);
 			throw bussinesRuleException;
@@ -80,6 +79,7 @@ public class BussinesTransaction extends CommonController<Transaction, Transacti
 			throw bussinesRuleException;
 		}
     	
+		trx.setDescription(trx.updateType(trx));
 		Transaction trxDB = service.create(trx);
 		
     	//Actualizar el saldo de la cuenta

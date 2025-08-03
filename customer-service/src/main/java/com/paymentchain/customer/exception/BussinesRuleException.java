@@ -20,9 +20,8 @@ public class BussinesRuleException  extends Exception {
 		this.httpStatus = httpStatus;
 	}
 	
-	public BussinesRuleException(String code, String message, HttpStatus preconditionFailed) {
+	public BussinesRuleException(String message, HttpStatus preconditionFailed) {
 		super(message);
-		this.code = code;
 		this.httpStatus = preconditionFailed;
 	}
 	
