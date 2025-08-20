@@ -22,6 +22,12 @@ import com.paymentchain.trasaction.exception.BussinesRuleException;
 import com.paymentchain.trasaction.service.TransactionService;
 import com.paymentchain.trasaction.utils.UtilString;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Transaction API", description = "This API serve all funtionality for management transactions")
 @RestController
 @RequestMapping("/transaction")
 public class TransactionController extends CommonController<Transaction, TransactionService>{
@@ -47,6 +53,9 @@ public class TransactionController extends CommonController<Transaction, Transac
 	 * Método para buscar las transacciones de un cliente por iban
 	 * @throws BussinesRuleException 
 	 */
+	@Operation(description = "Returns transaction found by Iban", summary = "Return 204 if no data found")
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Exito"),
+			@ApiResponse(responseCode = "500", description = "Internal error")})
 	@GetMapping("/customer/transactions")
 	public List<Transaction> findByIban(@RequestParam String iban) throws BussinesRuleException {
 		List<Transaction> transactions = service.findByIban(iban);
@@ -74,6 +83,9 @@ public class TransactionController extends CommonController<Transaction, Transac
 	 * Método para editar una transacción
 	 * @throws BussinesRuleException 
 	 */
+	@Operation(description = "Returns an edited transaction into Response", summary = "Return 204 if no data found")
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Exito"),
+			@ApiResponse(responseCode = "500", description = "Internal error")})
 	@PutMapping("/{id}")
 	public ResponseEntity<?> edit(@RequestBody Transaction transaction, @PathVariable Long id) throws BussinesRuleException {
 		Optional<Transaction> transactionOp = service.findById(id);
