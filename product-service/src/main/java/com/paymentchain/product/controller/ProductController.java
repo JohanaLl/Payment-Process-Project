@@ -12,11 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paymentchain.common.controller.CommonController;
+import com.paymentchain.product.dto.ProductRequest;
+import com.paymentchain.product.dto.ProductResponse;
 import com.paymentchain.product.entity.Product;
 import com.paymentchain.product.exception.BussinesRuleException;
 import com.paymentchain.product.service.ProductService;
 import com.paymentchain.product.utils.UtilString;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Product API", description = "This API serve all funtionality for management products")
 @RestController
 @RequestMapping("/product")
 public class ProductController extends CommonController<Product, ProductService>{
@@ -26,19 +31,14 @@ public class ProductController extends CommonController<Product, ProductService>
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> edit(@RequestBody Product product, @PathVariable Long id) throws BussinesRuleException {
+	public ResponseEntity<ProductResponse> edit(@RequestBody ProductRequest product, @PathVariable Long id) throws BussinesRuleException {
 		
-		Optional<Product> productOp = service.findById(id);
-		if (!productOp.isPresent()) {
-			BussinesRuleException bussinesRuleException = new BussinesRuleException("error.validation.product.not.exists", HttpStatus.PRECONDITION_FAILED);
-			throw bussinesRuleException;
+		try {
+			ProductResponse updatedProduct = service.updateProduct(id, product);
+			return ResponseEntity.ok(updatedProduct);
+		} catch (RuntimeException e) {
+			return ResponseEntity.notFound().build();
 		}
-		
-		Product productDB = productOp.get();
-		productDB.setCode(product.getCode());
-		productDB.setName(product.getName());
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(productDB));
 	}
 	
 	@PostMapping("/valid")
