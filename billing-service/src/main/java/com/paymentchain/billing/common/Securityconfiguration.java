@@ -8,6 +8,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.http.HttpMethod;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -18,6 +19,7 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class Securityconfiguration {
 
+	//Definición de patrones de URL que se quieren tener sin seguridad
     private static final String[] NO_AUTH_LIST = {
             "/v3/api-docs",//
             "/configuration/ui", //
@@ -28,8 +30,8 @@ public class Securityconfiguration {
             "/h2-console/**"};
          
         
-          @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     //Choose one configuration
 
         //01- Full security in order to ask by user and password before to acces swagger ui
@@ -57,20 +59,21 @@ public class Securityconfiguration {
 //                    .csrf().disable()
 //                    //Configure custom restrictions in order to ask by user and password
 //                    .authorizeHttpRequests((authz) -> authz
-//                    .antMatchers(NO_AUTH_LIST).permitAll()                
-//                    .antMatchers(HttpMethod.POST, "/*billing*/**").authenticated()
+//                    .requestMatchers(NO_AUTH_LIST).permitAll()                
+//                    .requestMatchers(HttpMethod.POST, "/*billing*/**").authenticated()
 //                    //Using defauls values, we can define role on .properties file that will be set whne user is authetnticate
-//                    .antMatchers(HttpMethod.GET,"/*billing*/**").hasRole("ADMIN")
+//                    .requestMatchers(HttpMethod.GET,"/*billing*/**").hasRole("ADMIN")
 //                    )                
 //                    //Use default credentials on .properties file
 //                    .httpBasic(withDefaults())
 //                    //use default UI.
 //                    .formLogin(withDefaults());
+//            
 //            return http.build();
         }
         
           
-           //This Handlers implement the CorsConfigurationSource interface in order to provide a CorsConfiguration for each request.
+       //This Handlers implement the CorsConfigurationSource interface in order to provide a CorsConfiguration for each request.
         @Bean
         CorsConfigurationSource corsConfigurationSource() {
             CorsConfiguration cc = new CorsConfiguration();
